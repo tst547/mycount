@@ -1,0 +1,2 @@
+# mycount
+test
