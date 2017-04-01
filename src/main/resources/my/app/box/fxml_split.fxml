@@ -14,7 +14,7 @@
                 <Button fx:id="dataBtn" layoutY="1.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="118.0" onAction="#DataWindowAction" text="基础数据" />
                 <Button fx:id="countBtn" layoutY="27.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="118.0" onAction="#CountWindowAction" text="计数数据" />
                 <Button fx:id="viewBtn" layoutY="53.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="118.0" onAction="#ViewWindowAction" text="统计图形" />
-                <Button fx:id="xxBtn" layoutY="79.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="118.0" onAction="#ViewWindowAction" text="玄学走势" />
+                <Button fx:id="xxBtn" layoutY="79.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="118.0" onAction="#XxWindowAction" text="玄学走势" />
            </children>
         </FlowPane>
         <TabPane fx:id="rightPane" styleClass="split-anchor-pane" prefHeight="399.0">

@@ -87,4 +87,7 @@ public class FxmlSplitController extends FxmlBase implements Initializable {
     public void changeSize() {
 
     }
+
+    public void XxWindowAction(ActionEvent actionEvent) {
+    }
 }
