@@ -38,10 +38,8 @@ public class AppBox {
         stg.initStyle(StageStyle.TRANSPARENT);
         stg.setScene(scene); //将场景载入舞台；
         stg.setTitle(title);
-        stg.setResizable(false);
         stg.show(); //显示窗口；
         fxmlBase.setStage(stg);
-        fxmlBase.changeSize();
         return target;
     }
 
@@ -60,7 +58,6 @@ public class AppBox {
         stg.initStyle(StageStyle.TRANSPARENT);
         stg.setScene(scene); //将场景载入舞台；
         stg.setTitle(title);
-        stg.setResizable(false);
         stg.show(); //显示窗口；
         fxmlBase.setStage(stg);
         return target;
