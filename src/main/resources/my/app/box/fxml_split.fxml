@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<SplitPane fx:id="splitPane" dividerPositions="0.24" stylesheets="@skin.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.app.controller.FxmlSplitController">
+    <items>
+      <FlowPane styleClass="split-flow-pane" orientation="HORIZONTAL">
+           <children>
+                <Button fx:id="dataBtn" layoutY="1.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="118.0" onAction="#DataWindowAction" text="基础数据" />
+                <Button fx:id="countBtn" layoutY="27.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="118.0" onAction="#CountWindowAction" text="计数数据" />
+                <Button fx:id="viewBtn" layoutY="53.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="118.0" onAction="#ViewWindowAction" text="统计图形" />
+                <Button fx:id="xxBtn" layoutY="79.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="118.0" onAction="#ViewWindowAction" text="玄学走势" />
+           </children>
+        </FlowPane>
+        <TabPane fx:id="rightPane" styleClass="split-anchor-pane" prefHeight="399.0">
+            <Tab text="welcome">
+                <fx:include fx:id="r" source="fxml_welcome.fxml"></fx:include>
+            </Tab>
+        </TabPane>
+    </items>
+</SplitPane>

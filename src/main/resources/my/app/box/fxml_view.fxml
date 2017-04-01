@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+
+<AnchorPane prefHeight="285.0" prefWidth="432.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.app.controller.FxmlViewController">
+   <children>
+      <ScrollPane prefHeight="285.0" prefWidth="432.0">
+        <content>
+            <FlowPane orientation="HORIZONTAL" prefHeight="284.0">
+                  <children>
+                     <LineChart fx:id="lineChart" layoutX="-2.0" prefHeight="280.0" title="几率波动">
+                       <xAxis>
+                         <CategoryAxis side="BOTTOM" />
+                       </xAxis>
+                       <yAxis>
+                         <NumberAxis side="LEFT" />
+                       </yAxis>
+                     </LineChart>
+                  </children>
+                  <PieChart fx:id="pieChart" title="占比" prefHeight="280.0" prefWidth="430.0"/>
+            </FlowPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
