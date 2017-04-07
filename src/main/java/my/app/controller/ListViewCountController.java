@@ -35,14 +35,15 @@ public class ListViewCountController implements Initializable{
         set.addAll(countSerivceSerivce.getTempAll());
         observableList.setAll(set);
         listView.setItems(observableList);
-        listView.setCellFactory(new Callback<ListView<Count>, ListCell<Count>>()
+        listView.setCellFactory((listView)-> new ListViewCountCell());
+        /*listView.setCellFactory(new Callback<ListView<Count>, ListCell<Count>>()
         {
             @Override
             public ListCell<Count> call(ListView<Count> listView)
             {
                 return new ListViewCountCell();
             }
-        });
+        });*/
     }
 
     @Override

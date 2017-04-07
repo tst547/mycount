@@ -1,5 +1,7 @@
 package my.app.controller;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,9 +9,11 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import my.app.App;
 import my.app.box.AppConts;
 import my.app.model.BaseData;
 import my.app.model.Count;
@@ -40,6 +44,10 @@ public class FxmlViewController extends FxmlBase implements Initializable {
     private LineChart lineChart;
     @FXML
     private PieChart pieChart;
+    @FXML
+    private PieChart pieChartTotal;
+    @FXML
+    private ChoiceBox choiceBox;
 
     /**
      * 初始化函数
@@ -49,40 +57,69 @@ public class FxmlViewController extends FxmlBase implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        List<BaseData> dataList = dataSerivce.getTempAll();//获取基础数据
-        List<Count> countList = countService.getTempAll();//获取计数数据
+        choiceBox.getItems().add(AppConts.CHOICE_TEXT_PERCENTAGE);
+        choiceBox.getItems().add(AppConts.CHOICE_TEXT_DATA);
+        choiceBox.getItems().add(AppConts.CHOICE_TEXT_COUNT);
+        choiceBox.getSelectionModel().selectedIndexProperty().addListener((o,n,n1)->{
+            List<BaseData> dataList = dataSerivce.getTempAll();//获取基础数据
+            List<Count> countList = countService.getTempAll();//获取计数数据
+            if (AppConts.CHOICE_TEXT_PERCENTAGE == choiceBox.getValue()){
+                setPercentage(dataList);
+            }else if (AppConts.CHOICE_TEXT_DATA == choiceBox.getValue()){
+                setData(dataList);
+            }else if (AppConts.CHOICE_TEXT_COUNT == choiceBox.getValue()){
+                setCount(countList,dataList);
+            }
+        });
+        Thread thread = new Thread(()->{
+            Platform.runLater(()->{
+                List<BaseData> dataList = dataSerivce.getTempAll();//获取基础数据
+                List<Count> countList = countService.getTempAll();//获取计数数据
 
-        XYChart.Series series = new XYChart.Series();//初始化一条线 该对象抽象了折线图的一条线
-        series.setName(AppConts.LINECHART_LINE_NAME);//设置该线名称
+                XYChart.Series series = new XYChart.Series();//初始化一条线 该对象抽象了折线图的一条线
+                series.setName(AppConts.LINECHART_LINE_NAME);//设置该线名称
 
-        Map dataMap = dataList
-                .stream()
-                .collect(Collectors.groupingBy(BaseData::getCreateTime,Collectors.counting()));//根据日期对基础数据进行分组查询，聚合同日期类型的总条数
-        Set<Map.Entry<LocalDate,Long>> dataSet = dataMap.entrySet();
+                Map dataMap = dataList
+                        .stream()
+                        .collect(Collectors.groupingBy(BaseData::getCreateTime,Collectors.counting()));//根据日期对基础数据进行分组查询，聚合同日期类型的总条数
+                Set<Map.Entry<LocalDate,Long>> dataSet = dataMap.entrySet();
 
-        Map countMap = countList
-                .stream()
-                .collect(Collectors.groupingBy(Count::getCreateTime, Collectors.summingInt(Count::getCount)));//根据日期对计数数据分组查询，并计算同日内计数的和
-        Set<Map.Entry<LocalDate,Integer>> set = countMap.entrySet();
-        set
-                .stream()
-                .sorted((s1,s2)-> s1.getKey().isBefore(s2.getKey())?-1:1)
-                .forEach(entry->{
-                    dataSet.forEach(e->{
-                        if (entry.getKey().equals(e.getKey())){
-                            try {
-                                double sum = Arith.div(e.getValue().doubleValue(),entry.getValue().doubleValue(),3);
-                                series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
-                            } catch (IllegalAccessException e1) {
-                                e1.printStackTrace();
-                            }
-                        }
-                    });
+                Map countMap = countList
+                        .stream()
+                        .collect(Collectors.groupingBy(Count::getCreateTime, Collectors.summingInt(Count::getCount)));//根据日期对计数数据分组查询，并计算同日内计数的和
+                Set<Map.Entry<LocalDate,Integer>> set = countMap.entrySet();
+                set
+                        .stream()
+                        .sorted((s1,s2)-> s1.getKey().isBefore(s2.getKey())?-1:1)
+                        .forEach(entry->{
+                            dataSet.forEach(e->{
+                                if (entry.getKey().equals(e.getKey())){
+                                    try {
+                                        double sum = Arith.div(e.getValue().doubleValue(),entry.getValue().doubleValue(),3);
+                                        series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
+                                    } catch (IllegalAccessException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                            });
 
-        });//使用了java 8 新特性 stream 及 lambda表达式对计数数据及基础数据进行计算 得到数据 并设置给线
+                        });//使用了java 8 新特性 stream 及 lambda表达式对计数数据及基础数据进行计算 得到数据 并设置给线
 
-        lineChart.getData().add(series);//将线放入折线图中
+                lineChart.getData().add(series);//将线放入折线图中
 
+                setPercentage(dataList);
+
+            });
+        });
+        thread.start();
+    }
+
+    @Override
+    public void changeSize() {
+    }
+
+    private void setPercentage(List<BaseData> dataList){
+        pieChart.getData().clear();
         Map<Integer,Long> pieMap = dataList
                 .stream()
                 .collect(Collectors.groupingBy(BaseData::getType,Collectors.counting()));//根据基础数据的类型进行分组查询
@@ -99,10 +136,26 @@ public class FxmlViewController extends FxmlBase implements Initializable {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-
     }
 
-    @Override
-    public void changeSize() {
+    private void setData(List<BaseData> dataList){
+        pieChart.getData().clear();
+        Map<Integer,Long> pieMap = dataList
+                .stream()
+                .collect(Collectors.groupingBy(BaseData::getType,Collectors.counting()));//根据基础数据的类型进行分组查询
+        PieChart.Data slice1 = new PieChart.Data("85 - "+pieMap.get(85), pieMap.get(85));
+        PieChart.Data slice2 = new PieChart.Data("90 - "+pieMap.get(90), pieMap.get(90));
+        pieChart.getData().add(slice1);
+        pieChart.getData().add(slice2);
+    }
+
+    private void setCount(List<Count> countList,List<BaseData> dataList){
+        pieChart.getData().clear();
+        long total = countList.stream().collect(Collectors.summarizingInt(Count::getCount)).getSum();
+        int totalData = dataList.size();
+        PieChart.Data slice1 = new PieChart.Data("y - "+totalData, totalData);
+        PieChart.Data slice2 = new PieChart.Data("w - "+total, total);
+        pieChart.getData().add(slice1);
+        pieChart.getData().add(slice2);
     }
 }

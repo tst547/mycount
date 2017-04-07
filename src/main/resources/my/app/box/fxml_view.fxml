@@ -4,16 +4,19 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.FlowPane?>
 
-<AnchorPane prefHeight="285.0" prefWidth="432.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.app.controller.FxmlViewController">
-   <children>
-      <ScrollPane prefHeight="285.0" prefWidth="432.0">
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<TabPane prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.app.controller.FxmlViewController">
+    <Tab closable="false" text="几率波动">
         <content>
-            <FlowPane orientation="HORIZONTAL" prefHeight="284.0">
-                  <children>
+              <ScrollPane prefHeight="285.0" prefWidth="432.0">
+                <content>
                      <LineChart fx:id="lineChart" layoutX="-2.0" prefHeight="280.0" title="几率波动">
                        <xAxis>
                          <CategoryAxis side="BOTTOM" />
@@ -22,10 +25,18 @@
                          <NumberAxis side="LEFT" />
                        </yAxis>
                      </LineChart>
-                  </children>
-                  <PieChart fx:id="pieChart" title="占比" prefHeight="280.0" prefWidth="430.0"/>
-            </FlowPane>
+                </content>
+              </ScrollPane>
         </content>
-      </ScrollPane>
-   </children>
-</AnchorPane>
+    </Tab>
+    <Tab closable="false" text="数据统计">
+        <content>
+            <AnchorPane>
+                <children>
+                    <ChoiceBox layoutX="14.0" layoutY="14.0" fx:id="choiceBox" />
+                    <PieChart layoutY="25.0" fx:id="pieChart" prefHeight="280.0" prefWidth="430.0" title="比例" />
+                </children>
+            </AnchorPane>
+        </content>
+    </Tab>
+</TabPane>

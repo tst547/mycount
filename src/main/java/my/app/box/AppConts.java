@@ -32,4 +32,9 @@ public class AppConts {
     public static final String LOCALDATE_FORMAT_NYR4 = "uu/MM/dd";
     public static final String LOCALDATE_FORMAT_YR = "MM-dd";
     public static final String LOCALDATE_FORMAT_YR2 = "MM/dd";
+
+
+    public static final String CHOICE_TEXT_PERCENTAGE = "占比比率";
+    public static final String CHOICE_TEXT_DATA = "占比数量";
+    public static final String CHOICE_TEXT_COUNT = "总计数量";
 }

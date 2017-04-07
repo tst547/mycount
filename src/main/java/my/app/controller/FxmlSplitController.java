@@ -21,12 +21,19 @@ import java.util.ResourceBundle;
  * Created by hanyu on 2017/3/30 0030.
  */
 public class FxmlSplitController extends FxmlBase implements Initializable {
-    @FXML private SplitPane splitPane;
-    @FXML private Button dataBtn;
-    @FXML private Button viewBtn;
-    @FXML private Button xxBtn;
-    @FXML private Button countBtn;
-    @FXML private TabPane rightPane;
+
+    @FXML
+    private SplitPane splitPane;
+    @FXML
+    private Button dataBtn;
+    @FXML
+    private Button viewBtn;
+    @FXML
+    private Button xxBtn;
+    @FXML
+    private Button countBtn;
+    @FXML
+    private TabPane rightPane;
 
     /**
      * 初始化函数

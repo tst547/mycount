@@ -25,9 +25,12 @@ public class FxmlCountController extends FxmlBase implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
-    @FXML private TextField data;
-    @FXML private DatePicker datePicker;
-    @FXML private Button submit;
+    @FXML
+    private TextField data;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private Button submit;
 
     /**
      * 提交新增的data数据
@@ -50,7 +53,6 @@ public class FxmlCountController extends FxmlBase implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     @Override
