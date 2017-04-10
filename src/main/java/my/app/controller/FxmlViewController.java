@@ -1,5 +1,6 @@
 package my.app.controller;
 
+import io.datafx.controller.ViewController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,7 +36,8 @@ import java.util.stream.Collectors;
  * 数据图形化控制器
  * Created by hanyu on 2017/3/30 0030.
  */
-public class FxmlViewController extends FxmlBase implements Initializable {
+@ViewController(value = "/my/app/box/fxml_view.fxml")
+public class FxmlViewController implements Initializable {
 
     private DataSerivce dataSerivce = new DataSerivce();
     private CountService countService = new CountService();
@@ -49,6 +51,12 @@ public class FxmlViewController extends FxmlBase implements Initializable {
     @FXML
     private ChoiceBox choiceBox;
 
+    private String[] boxItems = {
+            AppConts.CHOICE_TEXT_PERCENTAGE,
+            AppConts.CHOICE_TEXT_DATA,
+            AppConts.CHOICE_TEXT_COUNT
+    };
+
     /**
      * 初始化函数
      * 根据已有数据初始化图形及信息
@@ -57,17 +65,16 @@ public class FxmlViewController extends FxmlBase implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        choiceBox.getItems().add(AppConts.CHOICE_TEXT_PERCENTAGE);
-        choiceBox.getItems().add(AppConts.CHOICE_TEXT_DATA);
-        choiceBox.getItems().add(AppConts.CHOICE_TEXT_COUNT);
-        choiceBox.getSelectionModel().selectedIndexProperty().addListener((o,n,n1)->{
+        choiceBox.getItems().addAll(boxItems);
+        choiceBox.getSelectionModel().select(0);
+        choiceBox.getSelectionModel().selectedIndexProperty().addListener((observableValue,value,newValue)->{
             List<BaseData> dataList = dataSerivce.getTempAll();//获取基础数据
             List<Count> countList = countService.getTempAll();//获取计数数据
-            if (AppConts.CHOICE_TEXT_PERCENTAGE == choiceBox.getValue()){
+            if (boxItems[newValue.intValue()].equals(AppConts.CHOICE_TEXT_PERCENTAGE)){
                 setPercentage(dataList);
-            }else if (AppConts.CHOICE_TEXT_DATA == choiceBox.getValue()){
+            }else if (boxItems[newValue.intValue()].equals(AppConts.CHOICE_TEXT_DATA)){
                 setData(dataList);
-            }else if (AppConts.CHOICE_TEXT_COUNT == choiceBox.getValue()){
+            }else if (boxItems[newValue.intValue()].equals(AppConts.CHOICE_TEXT_COUNT)){
                 setCount(countList,dataList);
             }
         });
@@ -112,10 +119,6 @@ public class FxmlViewController extends FxmlBase implements Initializable {
             });
         });
         thread.start();
-    }
-
-    @Override
-    public void changeSize() {
     }
 
     private void setPercentage(List<BaseData> dataList){

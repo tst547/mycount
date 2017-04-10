@@ -1,5 +1,6 @@
 package my.app.controller;
 
+import io.datafx.controller.ViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,7 +23,8 @@ import java.util.ResourceBundle;
  * 数据控制器
  * Created by hanyu on 2017/3/29 0029.
  */
-public class FxmlDataController extends FxmlBase implements Initializable{
+@ViewController(value = "/my/app/box/fxml_data.fxml")
+public class FxmlDataController implements Initializable{
 
     DataSerivce dataSerivce = new DataSerivce();
 
@@ -53,11 +55,4 @@ public class FxmlDataController extends FxmlBase implements Initializable{
         datePicker.setValue(LocalDate.now());
     }
 
-
-    @Override
-    public void changeSize() {
-        getStage().setWidth(anchorPane.getPrefWidth());
-        getStage().setHeight(anchorPane.getPrefHeight());
-        System.out.println("w: "+anchorPane.getPrefWidth()+" h:"+anchorPane.getPrefHeight());
-    }
 }

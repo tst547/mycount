@@ -6,7 +6,8 @@
 
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
-<SplitPane fx:id="splitPane" dividerPositions="0.24" stylesheets="@skin.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.app.controller.FxmlSplitController">
+<?import com.jfoenix.controls.JFXTabPane?>
+<SplitPane fx:id="splitPane" dividerPositions="0.24" stylesheets="@skin.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
     <items>
       <FlowPane styleClass="split-flow-pane" orientation="HORIZONTAL">
            <children>
@@ -16,10 +17,10 @@
                 <Button fx:id="xxBtn" layoutY="79.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="118.0" onAction="#XxWindowAction" text="玄学走势" />
            </children>
         </FlowPane>
-        <TabPane fx:id="rightPane" styleClass="split-anchor-pane" prefHeight="399.0">
+        <JFXTabPane fx:id="rightPane" styleClass="split-anchor-pane" prefHeight="399.0">
             <Tab text="welcome">
                 <fx:include fx:id="r" source="fxml_welcome.fxml"></fx:include>
             </Tab>
-        </TabPane>
+        </JFXTabPane>
     </items>
 </SplitPane>

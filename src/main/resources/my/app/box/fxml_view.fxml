@@ -12,7 +12,7 @@
 
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<TabPane prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="my.app.controller.FxmlViewController">
+<TabPane prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
     <Tab closable="false" text="几率波动">
         <content>
               <ScrollPane prefHeight="285.0" prefWidth="432.0">

@@ -1,5 +1,6 @@
 package my.app.controller;
 
+import io.datafx.controller.ViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,7 +20,8 @@ import java.util.ResourceBundle;
  * 计数控制器
  * Created by hanyu on 2017/3/30 0030.
  */
-public class FxmlCountController extends FxmlBase implements Initializable {
+@ViewController(value = "/my/app/box/fxml_count.fxml")
+public class FxmlCountController implements Initializable {
 
     CountService countSerivce = new CountService();
 
@@ -55,8 +57,4 @@ public class FxmlCountController extends FxmlBase implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    @Override
-    public void changeSize() {
-
-    }
 }

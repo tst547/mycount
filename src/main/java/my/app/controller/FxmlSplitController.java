@@ -1,5 +1,9 @@
 package my.app.controller;
 
+import com.jfoenix.controls.JFXListView;
+import io.datafx.controller.ViewController;
+import io.datafx.controller.context.FXMLApplicationContext;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +24,8 @@ import java.util.ResourceBundle;
  * 分割面板控制器
  * Created by hanyu on 2017/3/30 0030.
  */
-public class FxmlSplitController extends FxmlBase implements Initializable {
+@ViewController(value = "/my/app/box/fxml_split.fxml")
+public final class FxmlSplitController{
 
     @FXML
     private SplitPane splitPane;
@@ -35,15 +40,6 @@ public class FxmlSplitController extends FxmlBase implements Initializable {
     @FXML
     private TabPane rightPane;
 
-    /**
-     * 初始化函数
-     * @param location
-     * @param resources
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
 
     /**
      * 打开数据图形化统计窗口
@@ -90,11 +86,19 @@ public class FxmlSplitController extends FxmlBase implements Initializable {
         rightPane.getTabs().add(employeeTab);
     }
 
-    @Override
-    public void changeSize() {
-
+    public void XxWindowAction(ActionEvent actionEvent) {
     }
 
-    public void XxWindowAction(ActionEvent actionEvent) {
+    public static final class InputController {
+        @FXML
+        private JFXListView<?> toolbarPopupList;
+
+        // close application
+        @FXML
+        private void submit() {
+            if (toolbarPopupList.getSelectionModel().getSelectedIndex() == 1) {
+                Platform.exit();
+            }
+        }
     }
 }
