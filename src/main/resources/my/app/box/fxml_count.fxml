@@ -8,7 +8,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.layout.GridPane?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<JFXTabPane prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
     <Tab closable="false" text="新增计数">
         <content>
             <AnchorPane fx:id="anchorPane">
@@ -24,7 +27,9 @@
     </Tab>
     <Tab closable="false" text="计数列表">
         <content>
-            <fx:include fx:id="listData" source="list_view_count.fxml" />
+            <GridPane alignment="CENTER">
+                <JFXTreeTableView minWidth="599.0" prefWidth="599.0" prefHeight="300.0" fx:id="listView"/>
+            </GridPane>
         </content>
     </Tab>
-</TabPane>
+</JFXTabPane>

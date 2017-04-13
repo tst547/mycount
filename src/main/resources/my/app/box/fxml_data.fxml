@@ -12,7 +12,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.layout.GridPane?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<JFXTabPane prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <Tab closable="false" text="新增数据">
       <content>
          <AnchorPane fx:id="anchorPane">
@@ -37,7 +40,9 @@
    </Tab>
    <Tab closable="false" text="数据列表">
       <content>
-         <fx:include source="list_view_data.fxml" fx:id="listData"/>
+         <GridPane alignment="CENTER">
+            <JFXTreeTableView minWidth="599.0" prefWidth="599.0" prefHeight="380.0" fx:id="listView"/>
+         </GridPane>
       </content>
    </Tab>
-</TabPane>
+</JFXTabPane>

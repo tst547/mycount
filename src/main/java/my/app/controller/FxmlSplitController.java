@@ -51,7 +51,6 @@ public final class FxmlSplitController{
             employeeTab.setContent(AppBox.getNew(AppConts.FXML_VIEW));
         } catch (IOException e) {
             e.printStackTrace();
-            AppBox.AlertError(e.getMessage());
         }
         rightPane.getTabs().add(employeeTab);
     }
@@ -66,7 +65,6 @@ public final class FxmlSplitController{
             employeeTab.setContent(AppBox.getNew(AppConts.FXML_COUNT));
         } catch (IOException e) {
             e.printStackTrace();
-            AppBox.AlertError(e.getMessage());
         }
         rightPane.getTabs().add(employeeTab);
     }
@@ -81,7 +79,6 @@ public final class FxmlSplitController{
             employeeTab.setContent(AppBox.getNew(AppConts.FXML_DATA));
         } catch (IOException e) {
             e.printStackTrace();
-            AppBox.AlertError(e.getMessage());
         }
         rightPane.getTabs().add(employeeTab);
     }

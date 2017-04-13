@@ -45,13 +45,15 @@ public class FxmlViewController implements Initializable {
     @FXML
     private LineChart lineChart;
     @FXML
+    private LineChart totalLineChart;
+    @FXML
     private PieChart pieChart;
     @FXML
     private PieChart pieChartTotal;
     @FXML
     private ChoiceBox choiceBox;
 
-    private String[] boxItems = {
+    private static String[] boxItems = {
             AppConts.CHOICE_TEXT_PERCENTAGE,
             AppConts.CHOICE_TEXT_DATA,
             AppConts.CHOICE_TEXT_COUNT
@@ -102,7 +104,11 @@ public class FxmlViewController implements Initializable {
                             dataSet.forEach(e->{
                                 if (entry.getKey().equals(e.getKey())){
                                     try {
-                                        double sum = Arith.div(e.getValue().doubleValue(),entry.getValue().doubleValue(),3);
+                                        double sum;
+                                        if(e.getValue().doubleValue()==0)
+                                            sum = 0;
+                                        else
+                                            sum = Arith.div(e.getValue().doubleValue(),entry.getValue().doubleValue(),3);
                                         series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
                                     } catch (IllegalAccessException e1) {
                                         e1.printStackTrace();
@@ -119,6 +125,48 @@ public class FxmlViewController implements Initializable {
             });
         });
         thread.start();
+        Thread totalThrd = new Thread(()->{
+            Platform.runLater(()->{
+                List<BaseData> dataList = dataSerivce.getTempAll();//获取基础数据
+                List<Count> countList = countService.getTempAll();//获取计数数据
+
+                XYChart.Series series = new XYChart.Series();//初始化一条线 该对象抽象了折线图的一条线
+                series.setName(AppConts.LINECHART_LINE_NAME);//设置该线名称
+
+                Map dataMap = dataList
+                        .stream()
+                        .collect(Collectors.groupingBy(BaseData::getCreateTime,Collectors.counting()));//根据日期对基础数据进行分组查询，聚合同日期类型的总条数
+                Set<Map.Entry<LocalDate,Long>> dataSet = dataMap.entrySet();
+
+                Map countMap = countList
+                        .stream()
+                        .collect(Collectors.groupingBy(Count::getCreateTime, Collectors.summingInt(Count::getCount)));//根据日期对计数数据分组查询，并计算同日内计数的和
+                Set<Map.Entry<LocalDate,Integer>> set = countMap.entrySet();
+                final int[] total = {0,0};
+                set
+                        .stream()
+                        .sorted((s1,s2)-> s1.getKey().isBefore(s2.getKey())?-1:1)
+                        .forEach(entry->{
+                            dataSet.forEach(e->{
+                                if (entry.getKey().equals(e.getKey())){
+                                    try {
+                                        total[0] += e.getValue().intValue();
+                                        total[1] += entry.getValue().intValue();
+                                        double sum = Arith.div(total[0],total[1],3);
+                                        series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
+                                    } catch (IllegalAccessException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                            });
+
+                        });//使用了java 8 新特性 stream 及 lambda表达式对计数数据及基础数据进行计算 得到数据 并设置给线
+
+                totalLineChart.getData().add(series);//将线放入折线图中
+
+            });
+        });
+        totalThrd.start();
     }
 
     private void setPercentage(List<BaseData> dataList){

@@ -14,6 +14,7 @@ import javafx.animation.Transition;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import my.app.box.AppBox;
 import my.app.datafx.ExtendedAnimatedFlowContainer;
 
 import javax.annotation.PostConstruct;
