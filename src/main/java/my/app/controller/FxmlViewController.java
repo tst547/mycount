@@ -1,5 +1,6 @@
 package my.app.controller;
 
+import com.jfoenix.controls.JFXComboBox;
 import io.datafx.controller.ViewController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -51,7 +52,7 @@ public class FxmlViewController implements Initializable {
     @FXML
     private PieChart pieChartTotal;
     @FXML
-    private ChoiceBox choiceBox;
+    private JFXComboBox jfxComboBox;
 
     private static String[] boxItems = {
             AppConts.CHOICE_TEXT_PERCENTAGE,
@@ -67,9 +68,9 @@ public class FxmlViewController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        choiceBox.getItems().addAll(boxItems);
-        choiceBox.getSelectionModel().select(0);
-        choiceBox.getSelectionModel().selectedIndexProperty().addListener((observableValue,value,newValue)->{
+        jfxComboBox.getItems().addAll(boxItems);
+        jfxComboBox.getSelectionModel().select(0);
+        jfxComboBox.getSelectionModel().selectedIndexProperty().addListener((observableValue,value,newValue)->{
             List<BaseData> dataList = dataSerivce.getTempAll();//获取基础数据
             List<Count> countList = countService.getTempAll();//获取计数数据
             if (boxItems[newValue.intValue()].equals(AppConts.CHOICE_TEXT_PERCENTAGE)){
@@ -91,7 +92,6 @@ public class FxmlViewController implements Initializable {
                 Map dataMap = dataList
                         .stream()
                         .collect(Collectors.groupingBy(BaseData::getCreateTime,Collectors.counting()));//根据日期对基础数据进行分组查询，聚合同日期类型的总条数
-                Set<Map.Entry<LocalDate,Long>> dataSet = dataMap.entrySet();
 
                 Map countMap = countList
                         .stream()
@@ -101,21 +101,21 @@ public class FxmlViewController implements Initializable {
                         .stream()
                         .sorted((s1,s2)-> s1.getKey().isBefore(s2.getKey())?-1:1)
                         .forEach(entry->{
-                            dataSet.forEach(e->{
-                                if (entry.getKey().equals(e.getKey())){
-                                    try {
-                                        double sum;
-                                        if(e.getValue().doubleValue()==0)
-                                            sum = 0;
-                                        else
-                                            sum = Arith.div(e.getValue().doubleValue(),entry.getValue().doubleValue(),3);
-                                        series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
-                                    } catch (IllegalAccessException e1) {
-                                        e1.printStackTrace();
-                                    }
+                            if (dataMap.containsKey(entry.getKey())){
+                                Long dat = (Long) dataMap.get(entry.getKey());
+                                try {
+                                    double sum;
+                                    if(dat.doubleValue()==0)
+                                        sum = 0;
+                                    else
+                                        sum = Arith.div(dat.doubleValue(),entry.getValue().doubleValue(),3);
+                                    series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
+                                } catch (IllegalAccessException e1) {
+                                    e1.printStackTrace();
                                 }
-                            });
-
+                            }else{
+                                series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),0));
+                            }
                         });//使用了java 8 新特性 stream 及 lambda表达式对计数数据及基础数据进行计算 得到数据 并设置给线
 
                 lineChart.getData().add(series);//将线放入折线图中
@@ -136,7 +136,6 @@ public class FxmlViewController implements Initializable {
                 Map dataMap = dataList
                         .stream()
                         .collect(Collectors.groupingBy(BaseData::getCreateTime,Collectors.counting()));//根据日期对基础数据进行分组查询，聚合同日期类型的总条数
-                Set<Map.Entry<LocalDate,Long>> dataSet = dataMap.entrySet();
 
                 Map countMap = countList
                         .stream()
@@ -146,19 +145,26 @@ public class FxmlViewController implements Initializable {
                 set
                         .stream()
                         .sorted((s1,s2)-> s1.getKey().isBefore(s2.getKey())?-1:1)
-                        .forEach(entry->{
-                            dataSet.forEach(e->{
-                                if (entry.getKey().equals(e.getKey())){
-                                    try {
-                                        total[0] += e.getValue().intValue();
-                                        total[1] += entry.getValue().intValue();
-                                        double sum = Arith.div(total[0],total[1],3);
-                                        series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
-                                    } catch (IllegalAccessException e1) {
-                                        e1.printStackTrace();
-                                    }
+                        .forEach(entry->{//以计数列表为基准进入foreach循环
+                            total[1] += entry.getValue().intValue();//计数每次循环累加
+                            if (dataMap.containsKey(entry.getKey())){//如果数据map中有这一天数据
+                                try {
+                                    Long dat = (Long) dataMap.get(entry.getKey());
+                                    total[0] += dat.intValue();
+                                    double sum = Arith.div(total[0],total[1],3);
+                                    series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
+                                } catch (IllegalAccessException e1) {
+                                    e1.printStackTrace();
                                 }
-                            });
+                            }else{//如果没有当天数据
+                                double sum = 0;
+                                try {
+                                    sum = Arith.div(total[0],total[1],3);
+                                    series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
+                                } catch (IllegalAccessException e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
                         });//使用了java 8 新特性 stream 及 lambda表达式对计数数据及基础数据进行计算 得到数据 并设置给线
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.FlowPane?>
+<GridPane alignment="CENTER" prefHeight="141.0" prefWidth="268.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" >
+   <children>
+       <FlowPane alignment="CENTER" orientation="HORIZONTAL" prefWidth="30.0">
+           <Label styleClass="wel-label" alignment="CENTER" text="Application powered by hanyu" />
+           <Label styleClass="wel-label" alignment="CENTER" text="thanks for the author of the Decoration" />
+       </FlowPane>
+   </children>
+</GridPane>
