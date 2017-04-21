@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
-<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
 <JFXTabPane prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
     <Tab closable="false" text="新增计数">
         <content>
@@ -18,9 +19,9 @@
                 <children>
                     <Label layoutX="63.0" layoutY="80.0" text="计数" />
                     <Label layoutX="63.0" layoutY="134.0" text="日期" />
-                    <TextField fx:id="data" layoutX="193.0" layoutY="76.0" prefHeight="26.0" prefWidth="108.0" />
-                    <Button fx:id="submit" layoutX="233.0" layoutY="180.0" mnemonicParsing="false" onAction="#submitBtnAction" prefHeight="26.0" prefWidth="68.0" text="提交" />
-                    <DatePicker fx:id="datePicker" layoutX="193.0" layoutY="130.0" prefHeight="26.0" prefWidth="108.0" AnchorPane.leftAnchor="193.0" AnchorPane.topAnchor="130.0" />
+                    <JFXTextField fx:id="data" style="-fx-max-width: 108.0" layoutX="193.0" layoutY="76.0" maxWidth="108.0" prefHeight="26.0" prefWidth="72.0" />
+                    <JFXButton fx:id="submit" layoutX="233.0" layoutY="180.0" mnemonicParsing="false" onAction="#submitBtnAction" prefHeight="26.0" prefWidth="68.0" text="提交" />
+                    <JFXDatePicker fx:id="datePicker" layoutX="193.0" layoutY="130.0" maxWidth="108.0" prefHeight="26.0" prefWidth="108.0" AnchorPane.leftAnchor="193.0" AnchorPane.topAnchor="130.0" />
                 </children>
             </AnchorPane>
         </content>
@@ -28,7 +29,13 @@
     <Tab closable="false" text="计数列表">
         <content>
             <GridPane alignment="CENTER">
-                <JFXTreeTableView minWidth="599.0" prefWidth="599.0" prefHeight="300.0" fx:id="listView"/>
+                <JFXTreeTableView fx:id="listView" minWidth="599.0" prefHeight="300.0" prefWidth="599.0" />
+            <columnConstraints>
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
         </content>
     </Tab>

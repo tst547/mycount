@@ -30,7 +30,6 @@ public abstract class ServiceBase<T extends BaseModel> {
     public void add(T t){
         getDataSource().getDataSource().add(t);
         getDataSource().commit();
-        int []as = {104};
     }
 
     /**

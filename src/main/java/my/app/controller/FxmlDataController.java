@@ -1,8 +1,6 @@
 package my.app.controller;
 
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -23,6 +21,7 @@ import my.app.box.AppConts;
 import my.app.model.BaseData;
 import my.app.serivce.DataSerivce;
 
+import javax.annotation.PostConstruct;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -34,7 +33,7 @@ import java.util.ResourceBundle;
  * Created by hanyu on 2017/3/29 0029.
  */
 @ViewController(value = "/my/app/box/fxml_data.fxml")
-public class FxmlDataController implements Initializable{
+public class FxmlDataController{
     @FXMLViewFlowContext
     private ViewFlowContext context;
 
@@ -44,13 +43,15 @@ public class FxmlDataController implements Initializable{
     @FXML
     private AnchorPane anchorPane;
     @FXML
-    private TextField data;
+    private JFXTextField data;
     @FXML
-    private ChoiceBox choiceType;
+    private JFXComboBox choiceType;
     @FXML
-    private DatePicker datePicker;
+    private JFXComboBox tableType;
     @FXML
-    private Button submit;
+    private JFXDatePicker datePicker;
+    @FXML
+    private JFXButton submit;
 
     ObservableList<Data> observableList;
 
@@ -64,14 +65,17 @@ public class FxmlDataController implements Initializable{
         baseData.setId(System.currentTimeMillis());
         baseData.setCreateTime(datePicker.getValue());
         baseData.setType(Integer.valueOf(choiceType.getValue().toString()));
-        baseData.setName(data.getText()==""? AppConts.KONG:data.getText());
+        if(data.getText()==""||data.getText().trim().length()==0){
+            AppBox.AlertDialog(context, AppBox.Dialog.failed);
+            return;
+        }
         dataSerivce.add(baseData);
         AppBox.AlertDialog(context, AppBox.Dialog.success);
     }
 
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @PostConstruct
+    public void init(URL location, ResourceBundle resources) {
         datePicker.setValue(LocalDate.now());
         JFXTreeTableColumn<Data, String> dateColumn = new JFXTreeTableColumn<>("date");
         dateColumn.setPrefWidth(190);

@@ -1,8 +1,6 @@
 package my.app.controller;
 
-import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.JFXTreeTableView;
-import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -46,11 +44,11 @@ public class FxmlCountController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
     @FXML
-    private TextField data;
+    private JFXTextField data;
     @FXML
-    private DatePicker datePicker;
+    private JFXDatePicker datePicker;
     @FXML
-    private Button submit;
+    private JFXButton submit;
 
     ObservableList<DCount> observableList;
 
@@ -64,7 +62,8 @@ public class FxmlCountController implements Initializable {
         Count count = new Count();
         count.setId(System.currentTimeMillis());
         count.setCreateTime(datePicker.getValue());
-        count.setCount(data.getText()!=""?Integer.valueOf(data.getText()):0);
+        if (data.getText()==""||data.getText().trim().length()==0)
+            count.setCount(0);
         countSerivce.add(count);
         AppBox.AlertDialog(context, AppBox.Dialog.success);
     }

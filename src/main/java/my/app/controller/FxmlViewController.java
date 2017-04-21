@@ -81,98 +81,91 @@ public class FxmlViewController implements Initializable {
                 setCount(countList,dataList);
             }
         });
-        Thread thread = new Thread(()->{
-            Platform.runLater(()->{
-                List<BaseData> dataList = dataSerivce.getTempAll();//获取基础数据
-                List<Count> countList = countService.getTempAll();//获取计数数据
+        Platform.runLater(()->{
+            List<BaseData> dataList = dataSerivce.getTempAll();//获取基础数据
+            List<Count> countList = countService.getTempAll();//获取计数数据
 
-                XYChart.Series series = new XYChart.Series();//初始化一条线 该对象抽象了折线图的一条线
-                series.setName(AppConts.LINECHART_LINE_NAME);//设置该线名称
+            XYChart.Series series = new XYChart.Series();//初始化一条线 该对象抽象了折线图的一条线
+            series.setName(AppConts.LINECHART_LINE_NAME);//设置该线名称
 
-                Map dataMap = dataList
-                        .stream()
-                        .collect(Collectors.groupingBy(BaseData::getCreateTime,Collectors.counting()));//根据日期对基础数据进行分组查询，聚合同日期类型的总条数
+            Map dataMap = dataList
+                    .stream()
+                    .collect(Collectors.groupingBy(BaseData::getCreateTime,Collectors.counting()));//根据日期对基础数据进行分组查询，聚合同日期类型的总条数
 
-                Map countMap = countList
-                        .stream()
-                        .collect(Collectors.groupingBy(Count::getCreateTime, Collectors.summingInt(Count::getCount)));//根据日期对计数数据分组查询，并计算同日内计数的和
-                Set<Map.Entry<LocalDate,Integer>> set = countMap.entrySet();
-                set
-                        .stream()
-                        .sorted((s1,s2)-> s1.getKey().isBefore(s2.getKey())?-1:1)
-                        .forEach(entry->{
-                            if (dataMap.containsKey(entry.getKey())){
+            Map countMap = countList
+                    .stream()
+                    .collect(Collectors.groupingBy(Count::getCreateTime, Collectors.summingInt(Count::getCount)));//根据日期对计数数据分组查询，并计算同日内计数的和
+            Set<Map.Entry<LocalDate,Integer>> set = countMap.entrySet();
+            set
+                    .stream()
+                    .sorted((s1,s2)-> s1.getKey().isBefore(s2.getKey())?-1:1)
+                    .forEach(entry->{
+                        if (dataMap.containsKey(entry.getKey())){
+                            Long dat = (Long) dataMap.get(entry.getKey());
+                            try {
+                                double sum;
+                                if(dat.doubleValue()==0)
+                                    sum = 0;
+                                else
+                                    sum = Arith.div(dat.doubleValue(),entry.getValue().doubleValue(),3);
+                                series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
+                            } catch (IllegalAccessException e1) {
+                                e1.printStackTrace();
+                            }
+                        }else{
+                            series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),0));
+                        }
+                    });//使用了java 8 新特性 stream 及 lambda表达式对计数数据及基础数据进行计算 得到数据 并设置给线
+
+            lineChart.getData().add(series);//将线放入折线图中
+
+            setPercentage(dataList);
+
+        });
+        Platform.runLater(()->{
+            List<BaseData> dataList = dataSerivce.getTempAll();//获取基础数据
+            List<Count> countList = countService.getTempAll();//获取计数数据
+
+            XYChart.Series series = new XYChart.Series();//初始化一条线 该对象抽象了折线图的一条线
+            series.setName(AppConts.LINECHART_LINE_NAME);//设置该线名称
+
+            Map dataMap = dataList
+                    .stream()
+                    .collect(Collectors.groupingBy(BaseData::getCreateTime,Collectors.counting()));//根据日期对基础数据进行分组查询，聚合同日期类型的总条数
+
+            Map countMap = countList
+                    .stream()
+                    .collect(Collectors.groupingBy(Count::getCreateTime, Collectors.summingInt(Count::getCount)));//根据日期对计数数据分组查询，并计算同日内计数的和
+            Set<Map.Entry<LocalDate,Integer>> set = countMap.entrySet();
+            final int[] total = {0,0};
+            set
+                    .stream()
+                    .sorted((s1,s2)-> s1.getKey().isBefore(s2.getKey())?-1:1)
+                    .forEach(entry->{//以计数列表为基准进入foreach循环
+                        total[1] += entry.getValue().intValue();//计数每次循环累加
+                        if (dataMap.containsKey(entry.getKey())){//如果数据map中有这一天数据
+                            try {
                                 Long dat = (Long) dataMap.get(entry.getKey());
-                                try {
-                                    double sum;
-                                    if(dat.doubleValue()==0)
-                                        sum = 0;
-                                    else
-                                        sum = Arith.div(dat.doubleValue(),entry.getValue().doubleValue(),3);
-                                    series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
-                                } catch (IllegalAccessException e1) {
-                                    e1.printStackTrace();
-                                }
-                            }else{
-                                series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),0));
+                                total[0] += dat.intValue();
+                                double sum = Arith.div(total[0],total[1],3);
+                                series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
+                            } catch (IllegalAccessException e1) {
+                                e1.printStackTrace();
                             }
-                        });//使用了java 8 新特性 stream 及 lambda表达式对计数数据及基础数据进行计算 得到数据 并设置给线
-
-                lineChart.getData().add(series);//将线放入折线图中
-
-                setPercentage(dataList);
-
-            });
-        });
-        thread.start();
-        Thread totalThrd = new Thread(()->{
-            Platform.runLater(()->{
-                List<BaseData> dataList = dataSerivce.getTempAll();//获取基础数据
-                List<Count> countList = countService.getTempAll();//获取计数数据
-
-                XYChart.Series series = new XYChart.Series();//初始化一条线 该对象抽象了折线图的一条线
-                series.setName(AppConts.LINECHART_LINE_NAME);//设置该线名称
-
-                Map dataMap = dataList
-                        .stream()
-                        .collect(Collectors.groupingBy(BaseData::getCreateTime,Collectors.counting()));//根据日期对基础数据进行分组查询，聚合同日期类型的总条数
-
-                Map countMap = countList
-                        .stream()
-                        .collect(Collectors.groupingBy(Count::getCreateTime, Collectors.summingInt(Count::getCount)));//根据日期对计数数据分组查询，并计算同日内计数的和
-                Set<Map.Entry<LocalDate,Integer>> set = countMap.entrySet();
-                final int[] total = {0,0};
-                set
-                        .stream()
-                        .sorted((s1,s2)-> s1.getKey().isBefore(s2.getKey())?-1:1)
-                        .forEach(entry->{//以计数列表为基准进入foreach循环
-                            total[1] += entry.getValue().intValue();//计数每次循环累加
-                            if (dataMap.containsKey(entry.getKey())){//如果数据map中有这一天数据
-                                try {
-                                    Long dat = (Long) dataMap.get(entry.getKey());
-                                    total[0] += dat.intValue();
-                                    double sum = Arith.div(total[0],total[1],3);
-                                    series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
-                                } catch (IllegalAccessException e1) {
-                                    e1.printStackTrace();
-                                }
-                            }else{//如果没有当天数据
-                                double sum = 0;
-                                try {
-                                    sum = Arith.div(total[0],total[1],3);
-                                    series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
-                                } catch (IllegalAccessException e) {
-                                    e.printStackTrace();
-                                }
+                        }else{//如果没有当天数据
+                            try {
+                                double sum = Arith.div(total[0],total[1],3);
+                                series.getData().add(new XYChart.Data(entry.getKey().format(DateTimeFormatter.ofPattern(AppConts.LOCALDATE_FORMAT_NYR2)),sum));
+                            } catch (IllegalAccessException e) {
+                                e.printStackTrace();
                             }
+                        }
 
-                        });//使用了java 8 新特性 stream 及 lambda表达式对计数数据及基础数据进行计算 得到数据 并设置给线
+                    });//使用了java 8 新特性 stream 及 lambda表达式对计数数据及基础数据进行计算 得到数据 并设置给线
 
-                totalLineChart.getData().add(series);//将线放入折线图中
+            totalLineChart.getData().add(series);//将线放入折线图中
 
-            });
         });
-        totalThrd.start();
     }
 
     private void setPercentage(List<BaseData> dataList){

@@ -17,7 +17,7 @@ import javax.annotation.PostConstruct;
 import java.util.Objects;
 
 /**
- * Created by Administrator on 2017/4/10 0010.
+ * Created by hanyu on 2017/4/10 0010.
  */
 @ViewController(value = "/my/app/box/fxml_side_menu.fxml")
 public class FxmlSideMenuController {
