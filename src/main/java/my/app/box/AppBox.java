@@ -1,6 +1,7 @@
 package my.app.box;
 
 import com.jfoenix.controls.JFXDecorator;
+import com.jfoenix.controls.JFXDialog;
 import io.datafx.controller.flow.Flow;
 import io.datafx.controller.flow.FlowException;
 import io.datafx.controller.flow.container.DefaultFlowContainer;
@@ -9,11 +10,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import my.app.controller.FxmlSplitController;
 import org.mistfx.decoration.Decoration;
 
 import java.io.IOException;
@@ -76,14 +79,16 @@ public class AppBox {
         decorator.setCustomMaximize(true);
         Scene scene = new Scene(decorator, width, height);
         final ObservableList<String> stylesheets = scene.getStylesheets();
-        stylesheets.addAll(AppBox.class.getResource("/css/jfoenix-fonts.css").toExternalForm(),
-                AppBox.class.getResource("/css/jfoenix-design.css").toExternalForm(),
-                AppBox.class.getResource("/css/jfoenix-main-demo.css").toExternalForm());
+        stylesheets.addAll(AppBox.class.getResource("jfoenix-fonts.css").toExternalForm(),
+                AppBox.class.getResource("jfoenix-design.css").toExternalForm(),
+                AppBox.class.getResource("jfoenix-main-demo.css").toExternalForm());
         stage.setMinWidth(width);
         stage.setMinHeight(height);
         stage.setScene(scene);
         stage.show();
+
     }
+
 
     /**
      * 获取窗口
@@ -108,23 +113,25 @@ public class AppBox {
     /**
      * 操作成功对话框提示
      */
-    public static void AlertSuccess(){
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("提示");
-        alert.setHeaderText(null);
-        alert.setContentText("操作成功!");
-        alert.showAndWait();
+    public static void AlertDialog(ViewFlowContext context,Dialog flag){
+        JFXDialog dialog = new JFXDialog();
+        try {
+            Parent parent = getNew(AppConts.DIALOG_FXML);
+            Label label = (Label) parent.lookup("#msg");
+            Button acceptButton = (Button) parent.lookup("#acceptButton");
+            label.setText(flag==Dialog.success?"操作成功!":flag==Dialog.failed?"操作失败!":"未知提示信息");
+            acceptButton.setOnMouseClicked((e) -> dialog.close());
+            dialog.setContent((Region) parent);
+            dialog.show((StackPane) context.getRegisteredObject(AppConts.CONTENT_PANE));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * 错误信息对话框提示
-     */
-    public static void AlertError(String msg){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("错误！");
-        alert.setHeaderText("详细信息");
-        alert.setContentText(msg);
-        alert.showAndWait();
+
+    public enum Dialog{
+        success,
+        failed
     }
 
 }

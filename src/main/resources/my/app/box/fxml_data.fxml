@@ -12,12 +12,19 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<TabPane prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.layout.GridPane?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<JFXTabPane prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
    <Tab closable="false" text="新增数据">
       <content>
          <AnchorPane fx:id="anchorPane">
          <children>
-            <ChoiceBox fx:id="choiceType" layoutX="73.0" layoutY="85.0" prefHeight="26.0" prefWidth="108.0" value="请选择" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="85.0">
+            <JFXComboBox fx:id="choiceType" layoutX="73.0" layoutY="85.0" prefHeight="26.0" prefWidth="108.0" value="请选择" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="85.0">
                <items>
                   <FXCollections fx:factory="observableArrayList">
                      <String fx:value="请选择" />
@@ -25,19 +32,21 @@
                      <String fx:value="90" />
                   </FXCollections>
                </items>
-            </ChoiceBox>
+            </JFXComboBox>
             <Label layoutX="39.0" layoutY="89.0" text="数据" />
             <Label layoutX="39.0" layoutY="143.0" text="日期" />
-            <TextField fx:id="data" layoutX="213.0" layoutY="85.0" prefHeight="26.0" prefWidth="108.0" />
-            <Button fx:id="submit" layoutX="233.0" layoutY="180.0" mnemonicParsing="false" onAction="#submitBtnAction" prefHeight="26.0" prefWidth="68.0" text="提交" />
-            <DatePicker fx:id="datePicker" layoutX="73.0" layoutY="139.0" prefHeight="26.0" prefWidth="108.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="139.0" />
+            <JFXTextField fx:id="data" layoutX="213.0" layoutY="85.0" prefHeight="26.0" prefWidth="108.0" style="-fx-max-width: 108.0"/>
+            <JFXButton fx:id="submit" layoutX="233.0" layoutY="180.0" mnemonicParsing="false" onAction="#submitBtnAction" prefHeight="26.0" prefWidth="68.0" text="提交" />
+            <JFXDatePicker fx:id="datePicker" layoutX="73.0" layoutY="139.0" prefHeight="26.0" prefWidth="108.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="139.0" />
          </children>
       </AnchorPane>
       </content>
    </Tab>
    <Tab closable="false" text="数据列表">
       <content>
-         <fx:include source="list_view_data.fxml" fx:id="listData"/>
+         <GridPane alignment="CENTER">
+            <JFXTreeTableView minWidth="599.0" prefWidth="599.0" prefHeight="380.0" fx:id="listView"/>
+         </GridPane>
       </content>
    </Tab>
-</TabPane>
+</JFXTabPane>

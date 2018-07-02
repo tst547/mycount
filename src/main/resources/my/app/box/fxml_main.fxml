@@ -13,7 +13,8 @@
 <?import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition?>
 <StackPane fx:id="root" xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           prefHeight="400.0" prefWidth="600.0">
+           prefHeight="400.0" prefWidth="600.0"
+minHeight="400" minWidth="600">
     <BorderPane>
         <top>
             <VBox spacing="20" prefHeight="35">

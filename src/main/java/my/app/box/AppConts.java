@@ -6,6 +6,10 @@ package my.app.box;
  */
 public class AppConts {
 
+    public static final String CONTENT_PANE = "ContentPane";
+
+    public static final String DIALOG_FXML = "dialog.fxml";
+
     public static final String KONG = "空";//中文空
     public static final String TestFileRoot = "e:\\mydata";//测试时使用文件路径
     public static final String SPACE = " ";//空格

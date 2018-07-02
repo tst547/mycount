@@ -10,14 +10,14 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<TabPane prefHeight="260.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
-    <Tab closable="false" text="几率波动">
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<JFXTabPane prefHeight="260.0" prefWidth="588.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+    <Tab closable="false" text="每日波动">
         <content>
-              <ScrollPane prefHeight="285.0" prefWidth="432.0">
+              <ScrollPane prefHeight="285.0" prefWidth="588.0">
                 <content>
-                     <LineChart fx:id="lineChart" layoutX="-2.0" prefHeight="280.0" title="几率波动">
+                     <LineChart fx:id="lineChart" layoutX="-2.0" prefHeight="280.0" title="每日波动">
                        <xAxis>
                          <CategoryAxis side="BOTTOM" />
                        </xAxis>
@@ -33,10 +33,26 @@
         <content>
             <AnchorPane>
                 <children>
-                    <ChoiceBox layoutX="14.0" layoutY="14.0" fx:id="choiceBox" />
+                    <JFXComboBox layoutX="14.0" layoutY="14.0" fx:id="jfxComboBox" />
                     <PieChart layoutY="25.0" fx:id="pieChart" prefHeight="280.0" prefWidth="430.0" title="比例" />
                 </children>
             </AnchorPane>
         </content>
     </Tab>
-</TabPane>
+    <Tab closable="false" text="总计波动">
+        <content>
+            <ScrollPane prefHeight="285.0" prefWidth="588.0">
+                <content>
+                    <LineChart fx:id="totalLineChart" layoutX="-2.0" prefHeight="280.0" title="总计波动">
+                        <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis side="LEFT" />
+                        </yAxis>
+                    </LineChart>
+                </content>
+            </ScrollPane>
+        </content>
+    </Tab>
+</JFXTabPane>

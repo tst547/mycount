@@ -179,7 +179,7 @@
 .jfx-hamburger StackPane {
     -fx-pref-width: 30px;
     -fx-pref-height: 4px;
-    -fx-background-color: #FFF;
+    -fx-background-color: #00acc1;
     -fx-background-radius: 5px;
 }
 
@@ -192,7 +192,7 @@
 .jfx-tool-bar {
     -fx-font-size: 20.0;
     -fx-font-weight: BOLD;
-    -fx-background-color: #5264AE;
+    -fx-background-color: WHITE;
     -fx-pref-width: 100.0%;
     -fx-pref-height: 64.0px;
 }
@@ -204,7 +204,7 @@
 }
 
 .jfx-tool-bar Label {
-    -fx-text-fill: WHITE;
+    -fx-text-fill: #00acc1;
 }
 
 .jfx-tool-bar .jfx-options-burger {
@@ -216,7 +216,7 @@
 }
 
 .jfx-tool-bar .jfx-rippler {
-    -jfx-rippler-fill: WHITE;
+    -jfx-rippler-fill: #00acc1;
 }
 
 .option-list-view {
@@ -225,7 +225,7 @@
 }
 
 .option-jfx-list-view-icon {
-    -fx-fill: #5264AE;
+    -fx-fill: #00acc1;
     -fx-padding: 0.0 10.0 0.0 5.0;
     -fx-cursor: hand;
 }
@@ -452,7 +452,7 @@
 
 .jfx-list-cell:odd:selected > .jfx-rippler > StackPane,
 .jfx-list-cell:even:selected > .jfx-rippler > StackPane {
-    -fx-background-color: rgba(0.0, 0.0, 255.0, 0.2);
+    -fx-background-color: WHITE;
 }
 
 .jfx-list-view {
@@ -787,7 +787,7 @@
 *******************************************************************************/
 
 .jfx-decorator {
-    -fx-decorator-color: derive(#5264AE, -20%);
+    -fx-decorator-color: derive(#00acc1, -20%);
 }
 
 .jfx-decorator .jfx-decorator-buttons-container {

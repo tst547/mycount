@@ -14,6 +14,7 @@ import javafx.animation.Transition;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import my.app.box.AppBox;
 import my.app.datafx.ExtendedAnimatedFlowContainer;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +22,7 @@ import javax.annotation.PostConstruct;
 import static io.datafx.controller.flow.container.ContainerAnimations.SWIPE_LEFT;
 
 /**
- * Created by Administrator on 2017/4/10 0010.
+ * Created by hanyu on 2017/4/10 0010.
  */
 @ViewController(value = "/my/app/box/fxml_main.fxml")
 public class FxmlMainController {
