@@ -33,7 +33,7 @@ import java.util.ResourceBundle;
  * Created by hanyu on 2017/3/29 0029.
  */
 @ViewController(value = "/my/app/box/fxml_data.fxml")
-public class FxmlDataController{
+public class FxmlDataController implements Initializable{
     @FXMLViewFlowContext
     private ViewFlowContext context;
 
@@ -74,8 +74,8 @@ public class FxmlDataController{
     }
 
 
-    @PostConstruct
-    public void init(URL location, ResourceBundle resources) {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
         datePicker.setValue(LocalDate.now());
         JFXTreeTableColumn<Data, String> dateColumn = new JFXTreeTableColumn<>("date");
         dateColumn.setPrefWidth(190);

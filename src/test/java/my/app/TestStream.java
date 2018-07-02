@@ -20,6 +20,6 @@ public class TestStream extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        AppBox.openNew(AppConts.FXML_VIEW,"dt");
+       // AppBox.openNew(AppConts.FXML_VIEW,"dt");
     }
 }

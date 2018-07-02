@@ -17,7 +17,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.mistfx.decoration.Decoration;
+
 
 import java.io.IOException;
 
@@ -34,7 +34,7 @@ public class AppBox {
      * @param fxml
      * @throws IOException
      */
-    public static Parent openNew(final String fxml, final String title) throws IOException {
+/*    public static Parent openNew(final String fxml, final String title) throws IOException {
         FXMLLoader loader = new FXMLLoader(box.getClass().getResource(fxml));
         Parent target = loader.load();//载入窗口
         Decoration decoration = new Decoration(target);
@@ -45,14 +45,14 @@ public class AppBox {
         stg.setTitle(title);
         stg.show(); //显示窗口；
         return target;
-    }
+    }*/
 
     /**
      * 打开新窗口
-     * @param fxml
+     * @param
      * @throws IOException
      */
-    public static Parent openNew(final String fxml, final String title,long width ,long height) throws IOException {
+/*    public static Parent openNew(final String fxml, final String title,long width ,long height) throws IOException {
         FXMLLoader loader = new FXMLLoader(box.getClass().getResource(fxml));
         Parent target = loader.load();//载入窗口
         Decoration decoration = new Decoration(target);
@@ -63,7 +63,7 @@ public class AppBox {
         stg.setTitle(title);
         stg.show(); //显示窗口；
         return target;
-    }
+    }*/
 
     public static void openJFX(Stage stage,ViewFlowContext flowContext,Class fxmlClass ,long width ,long height) throws IOException {
         Flow flow = new Flow(fxmlClass);
